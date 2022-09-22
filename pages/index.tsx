@@ -3,10 +3,25 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Ticker from 'react-ticker';
 import { useState } from 'react';
+// import component
+import Drawer from 'react-modern-drawer';
+//import styles
+import 'react-modern-drawer/dist/index.css';
 
 const Home: NextPage = () => {
+  const [text, setText] = useState('Add new text..');
   const [move, setMove] = useState(true);
   const [speed, setSpeed] = useState(10);
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    setIsOpen(false);
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -17,7 +32,7 @@ const Home: NextPage = () => {
       <Ticker speed={speed} move={move}>
         {({ index }) => (
           <>
-            <h1>Berk gursoy finans</h1>
+            <h1>{`${text}  `}</h1>
           </>
         )}
       </Ticker>
@@ -58,6 +73,47 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Ticker</a>
         </h1>
+        <div>
+          <button
+            style={{
+              width: 200,
+              height: 100,
+              backgroundColor: 'gray',
+              borderColor: 'gray',
+              borderRadius: 5,
+            }}
+            onClick={toggleDrawer}
+          >
+            <p>Add New Text</p>
+          </button>
+          <Drawer
+            open={isOpen}
+            onClose={toggleDrawer}
+            direction="right"
+            size={300}
+          >
+            <form style={{ padding: 5 }} onSubmit={handleSubmit}>
+              <p>
+                <label htmlFor="text" style={{ color: 'black' }}>
+                  New Text
+                </label>
+              </p>
+              <textarea
+                id="w3review"
+                value={text}
+                name="w3review"
+                rows={30}
+                cols={32}
+                onChange={(event) => setText(event.target.value)}
+              >
+                At w3schools.com you will learn how to make a website. They
+                offer free tutorials in all web development technologies.
+              </textarea>
+              <br />
+              <input type="submit" value="Submit" />
+            </form>
+          </Drawer>
+        </div>
       </main>
 
       <footer className={styles.footer}>
